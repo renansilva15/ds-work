@@ -3,11 +3,13 @@
 // setInterval(() => test(), 1000)
 
 
-async function sendToQueue(userInput, url='https://api.example.com/post-endpoint') {
-  await axios.post(url, userInput).catch(() => {console.log('Não funfo')})
+async function sendToQueue(userName, url='http://localhost:3010') {
+  const response = await axios.post(url, {userName}, { headers: {'Content-Type': 'application/json'} }).catch(() => {console.log('Não funfo')})
+
+  console.log(response.data);
 }
 
-const inputMessage = 'Digite um número binário: '
+const inputMessage = 'Digite um nome de usuário do Instagram: '
 const { default: axios } = require('axios');
 const readline = require('readline');
 
@@ -17,6 +19,8 @@ const rl = readline.createInterface({
 });
 
 rl.question(`${inputMessage}`, (userInput) => {
-  sendToQueue(userInput)
+  if (userInput.length && userInput.length <= 30 && userInput === userInput.toLowerCase() && !userInput.endsWith('.')) {
+    sendToQueue(userInput);
+  }
   rl.close();
 });
