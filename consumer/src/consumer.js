@@ -2,6 +2,7 @@ const { default: axios } = require('axios');
 const express = require('express');
 const app = express();
 const port = 3011;
+require('dotenv').config();
 
 
 app.use(express.json());
@@ -9,13 +10,15 @@ app.use(express.json());
 
 app.get('/:username', async (req, res) => {
     try {
+        const { api_key, host } = process.env;
+
         const user = req.params.username;
         const options = {
             method: 'GET',
             url: `https://instagram-profile1.p.rapidapi.com/getprofile/${user}`,
             headers: {
-                'X-RapidAPI-Key': 'c24d7fed90msh1199fd6783e8023p1ecc44jsn5bc1d186a860',
-                'X-RapidAPI-Host': 'instagram-profile1.p.rapidapi.com'
+                'X-RapidAPI-Key': api_key,
+                'X-RapidAPI-Host': host
             }
         };
         
