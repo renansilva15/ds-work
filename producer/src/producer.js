@@ -23,21 +23,21 @@ async function testQueue(url) {
 }
 
 async function sendToQueue(url, userName) {
-  let response;
+  let response
 
   try {
-    // const requestUrl = `${url}?userName=${encodeURIComponent(userName)}`;
-    const requestUrl = `${url}/${userName}`;
-    response = await axios.post(requestUrl);
-    console.log(`${userName} \tok`);
+    // const requestUrl = `${url}?userName=${encodeURIComponent(userName)}`
+    const requestUrl = `${url}/${userName}`
+    response = await axios.post(requestUrl)
+    console.log(`${userName} \tok`)
   } catch (err) {
-    console.log(`${userName} \terr`);
+    console.log(`${userName} \terr`)
     response = {
       status: 500
-    };
+    }
   }
 
-  return response.status;
+  return response.status
 }
 
 async function run(url) {
@@ -46,7 +46,10 @@ async function run(url) {
   let sendToQueueResponse = []
 
   for (const index of userNames) {
-    sendToQueueResponse.push(await sendToQueue(url, index))
+    if (index.length) {
+      sendToQueueResponse.push(await sendToQueue(url, index))
+
+    }
   }
 
   return (await Promise.all(sendToQueueResponse)).includes(500) ? 500 : 200
@@ -62,10 +65,10 @@ app.get('/', async (req, res) => {
 
   if (testQueueResponse !== 500) {
     runResponse = await run(`${url}:${queuePort}`)
-    
+
   } else {
     runResponse = 500
-    
+
   }
 
   res.status(runResponse).send(runResponse === 500 ? 'Erro ao enviar para a fila' : 'Todos os itens foram enviados para a fila')
@@ -92,11 +95,4 @@ rl.question(`${inputMessage}`, (userInput) => {
   }
   rl.close()
 })
-*/
-
-
-/*
-const test = (t = 1) => console.log(t)
-
-setInterval(() => test(), 1000)
 */

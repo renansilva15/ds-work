@@ -1,14 +1,13 @@
-const express = require('express');
-const axios = require('axios');
-require('dotenv').config();
+const express = require('express')
+const axios = require('axios')
+const { Pool } = require('pg')
+require('dotenv').config()
 
 const port = 3012
-const dbPort = 5433
+const dbPort = 3013
 const password = 'root'
 const tableName = 'instagram_profile'
 const url = `http://localhost`
-
-const { Pool } = require('pg');
 
 const pool = new Pool({
   user: 'postgres',
@@ -16,43 +15,66 @@ const pool = new Pool({
   database: 'postgres',
   password: password,
   port: dbPort,
-});
+})
 
 const insertData = async (values) => {
-  let dbResponse
+  return new Promise(async (resolve) => {
+    let dbResponse
 
-  try {
-    const query = `
-      INSERT INTO ${tableName} (name, img)
-      VALUES ($1, $2)
-      RETURNING *
-    `;
+    try {
+      const query = `
+        INSERT INTO ${tableName} (user_name, real_name, img)
+        VALUES ($1, $2, $3)
+        RETURNING *
+      `
 
-    const client = await pool.connect();
-    const result = await client.query(query, values);
-    console.log('Entered data:', result.rows[0]);
-    client.release();
+      const client = await pool.connect()
+      const result = await client.query(query, values)
+      console.log('Entered data:', result.rows[0])
+      client.release()
 
-    dbResponse = 200
-  } catch (error) {
-    console.error('Error inserting data:', error);
+      dbResponse = 200
+    } catch (error) {
+      console.error('Error inserting data:', error)
 
-    dbResponse = 500
+      dbResponse = 500
+    }
+
+    resolve(dbResponse)
+  })
+}
+
+const retryRequest = async (options, maxRetries = 2, retryDelay = 2500) => {
+  let retryCount = 0
+
+  while (retryCount < maxRetries) {
+    try {
+      const response = await axios.request(options)
+      return response
+    } catch (error) {
+      if (error.response && error.response.status === 429) {
+        console.log('Too Many Requests. Retrying...')
+        retryCount++
+        await new Promise(resolve => setTimeout(resolve, retryDelay))
+      } else {
+        throw error
+      }
+    }
   }
 
-  return dbResponse
-};
+  throw new Error(`Request failed after ${maxRetries} retries.`)
+}
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+app.use(express.json())
 
-app.get('/:username', async (req, res) => {
-  let insertDataResponse
+app.get('/:userName', async (req, res) => {
+  let insertDataResponse = 200
 
-  const { api_key, host } = process.env;
+  const { api_key, host } = process.env
 
-  const user = req.params.username;
+  const user = req.params.userName
   const options = {
     method: 'GET',
     url: `https://instagram-profile1.p.rapidapi.com/getprofile/${user}`,
@@ -60,24 +82,25 @@ app.get('/:username', async (req, res) => {
       'X-RapidAPI-Key': api_key,
       'X-RapidAPI-Host': host
     }
-  };
+  }
 
   try {
-    const response = await axios.request(options);
-    if (response.data.status === 'fail') {
-      console.log('User not found');
+    const response = await retryRequest(options)
+    if (response.data.not_found) {
+      console.log(`User ${user} not found`)
+
     } else {
-      const data = { "Name": response.data.full_name, "IMG": response.data.profile_pic_url };
-      console.log(data);
-      insertDataResponse = insertData([data.Name, data.IMG])
+      const data = { "Name": response.data.full_name, "IMG": response.data.profile_pic_url }
+      insertDataResponse = await insertData([user, data.Name, data.IMG])
+
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 
   res.sendStatus(insertDataResponse)
-});
+})
 
 app.listen(port, () => {
   console.log(`HTTP server running on ${url}:${port}`)
-});
+})
