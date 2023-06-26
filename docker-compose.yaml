@@ -1,0 +1,40 @@
+version: '3'
+networks:
+  net:
+
+services:
+  sd-db:
+    build:
+      context: ./db
+    ports:
+      - 5432:5432
+    networks:
+      - net
+    environment:
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  sd-consumer:
+    build:
+      context: ./consumer
+    ports:
+      - 3012:3012
+    networks:
+      - net
+
+  sd-queue:
+    build:
+      context: ./queue
+    ports:
+      - 3011:3011
+    networks:
+      - net
+
+  sd-producer:
+    build:
+      context: ./producer
+    ports:
+      - 3010:3010
+    networks:
+      - net
