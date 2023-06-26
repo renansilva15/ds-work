@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Work of the Special Topics in Networks and Distributed Systems discipline that uses Docker Compose to orchestrate four interconnected Docker containers.
+Work of the Tópicos Especiais em Redes e Sistemas Distribuídos (Special Topics in Networks and Distributed Systems) discipline that uses Docker Compose to orchestrate four interconnected Docker containers.
 
 The system is composed of the containers: **producer**; **queue**; **consumer**; and **db** (database). 
 
