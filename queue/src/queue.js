@@ -4,6 +4,7 @@ const axios = require('axios')
 const port = 3011
 const consumerPort = 3012
 const url = `http://localhost`
+const consumerUrl = `http://sd-consumer`
 
 let queue = []
 
@@ -61,7 +62,7 @@ app.post('/:userName', (req, res) => {
 
     if (queue.length === 1) {
       const intervalId = setInterval(async () => {
-        await consumeQueue(`${url}:${consumerPort}`)
+        await consumeQueue(`${consumerUrl}:${consumerPort}`)
         if (!queue.length) {
           console.log('Lista vazia')
           clearInterval(intervalId)

@@ -1,17 +1,19 @@
 const express = require('express')
 const axios = require('axios')
 const { Pool } = require('pg')
-require('dotenv').config()
+
+const API_KEY='f2e66f757emsh6514120c1c3823ap1a7a4djsn0c10e4162d46'
+const HOST='instagram-profile1.p.rapidapi.com'
 
 const port = 3012
-const dbPort = 3013
+const dbPort = 5432
 const password = 'root'
 const tableName = 'instagram_profile'
 const url = `http://localhost`
 
 const pool = new Pool({
   user: 'postgres',
-  host: 'localhost',
+  host: 'sd-db',
   database: 'postgres',
   password: password,
   port: dbPort,
@@ -72,15 +74,13 @@ app.use(express.json())
 app.get('/:userName', async (req, res) => {
   let insertDataResponse = 200
 
-  const { api_key, host } = process.env
-
   const user = req.params.userName
   const options = {
     method: 'GET',
     url: `https://instagram-profile1.p.rapidapi.com/getprofile/${user}`,
     headers: {
-      'X-RapidAPI-Key': api_key,
-      'X-RapidAPI-Host': host
+      'X-RapidAPI-Key': API_KEY,
+      'X-RapidAPI-Host': HOST
     }
   }
 
@@ -90,7 +90,7 @@ app.get('/:userName', async (req, res) => {
       console.log(`User ${user} not found`)
 
     } else {
-      const data = { "Name": response.data.full_name, "IMG": response.data.profile_pic_url }
+      const data = { 'Name': response.data.full_name, 'IMG': response.data.profile_pic_url }
       insertDataResponse = await insertData([user, data.Name, data.IMG])
 
     }

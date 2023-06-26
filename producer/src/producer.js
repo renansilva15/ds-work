@@ -4,6 +4,7 @@ const axios = require('axios')
 const port = 3010
 const queuePort = 3011
 const url = `http://localhost`
+const queueUrl = `http://sd-queue`
 
 async function testQueue(url) {
   let response
@@ -60,11 +61,11 @@ const app = express()
 app.use(express.json())
 
 app.get('/', async (req, res) => {
-  const testQueueResponse = await testQueue(`${url}:${queuePort}/test`)
+  const testQueueResponse = await testQueue(`${queueUrl}:${queuePort}/test`)
   let runResponse
 
   if (testQueueResponse !== 500) {
-    runResponse = await run(`${url}:${queuePort}`)
+    runResponse = await run(`${queueUrl}:${queuePort}`)
 
   } else {
     runResponse = 500
