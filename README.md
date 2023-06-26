@@ -7,6 +7,7 @@ Work of the Special Topics in Networks and Distributed Systems discipline that u
 The system is composed of the containers: **producer**; **queue**; **consumer**; and **db** (database). 
 
 Work architecture:
+
 ![architecture](architecture.png)
 
 The API used in the project was the [Instagram Profile](https://rapidapi.com/fariswdcash-434L2ELS8qx/api/instagram-profile1/). The API takes an Instagram userName and returns that user's real name and profile picture.
