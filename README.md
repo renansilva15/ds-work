@@ -44,7 +44,9 @@ Finally, the consumer saves the data in the container table **db** *(instagram_p
 
 ### Run
 
-Go to *docker-compose.yml* folder and run the command below in the terminal:
+Go to *consumer/src/consumer.js* and change the *API_KEY*. You can get a new key [here](https://rapidapi.com/fariswdcash-434L2ELS8qx/api/instagram-profile1/).
+
+After change the *API_KEY*, go to *docker-compose.yml* folder and run the command below in the terminal:
 
 ```
 docker compose up
