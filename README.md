@@ -56,6 +56,11 @@ After change the *API_KEY*, go to *docker-compose.yml* folder and run the comman
 ```
 docker compose up
 ```
+Finally make a GET request to the **producer**, it will send all *userNames* in the *assets/data.txt* file to the queue.
+
+Producer link:
+
+http://localhost:3010
 
 ---
 

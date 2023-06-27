@@ -2,7 +2,7 @@ const express = require('express')
 const axios = require('axios')
 const { Pool } = require('pg')
 
-const API_KEY='581a7f96c8msh272d47fa9496d0cp173a32jsnc2004e10420d'
+const API_KEY='d53bc78f32msh0aa94f439c187b6p15f4ddjsn2ea6f3d3e2fa'
 const HOST='instagram-profile1.p.rapidapi.com'
 
 const port = 3012
