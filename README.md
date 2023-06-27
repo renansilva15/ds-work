@@ -15,10 +15,11 @@ The API used in the project was the [Instagram Profile](https://rapidapi.com/far
 ## Containers
 The **db** container is running on a [postgres image](https://hub.docker.com/_/postgres) and the others containers on [Node images](https://hub.docker.com/_/node). All requests are made using [Axios](https://axios-http.com/docs/intro).
 
-All containers run on the "net" network, created in Docker Compose. They can be accessed via http://localhost:*port*.
+All containers run on the "net" network, created in Docker Compose. They can be accessed via http://localhost:port.
 
 ### producer
 The producer sends to the queue all the userNames that are in the *assets/data.txt* file.
+
 This server run on port **3010**.
 
 ### queue
@@ -33,6 +34,22 @@ This server run on port **3012**.
 
 ### db
 Finally, the consumer saves the data in the container table **db** *(instagram_profile*) that has the fields:
-user_name; real_name; and img.
+*user_name*; *real_name*; and *img*.
 
 ## How to use
+
+### Requirements
+
+[docker compose](https://docs.docker.com/compose/)
+
+### Run
+
+Go to *docker-compose.yml* folder and run the command below in the terminal:
+
+```
+docker compose up
+```
+
+---
+
+Made with ❤️ by Bruno Wanderson and Renan Gabriel

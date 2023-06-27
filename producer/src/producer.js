@@ -4,7 +4,7 @@ const axios = require('axios')
 const port = 3010
 const queuePort = 3011
 const url = `http://localhost`
-const queueUrl = `http://sd-queue`
+const queueUrl = `http://ds-queue`
 
 async function testQueue(url) {
   let response

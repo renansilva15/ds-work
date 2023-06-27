@@ -4,7 +4,7 @@ const axios = require('axios')
 const port = 3011
 const consumerPort = 3012
 const url = `http://localhost`
-const consumerUrl = `http://sd-consumer`
+const consumerUrl = `http://ds-consumer`
 
 let queue = []
 

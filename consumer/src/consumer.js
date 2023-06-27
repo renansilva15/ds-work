@@ -13,7 +13,7 @@ const url = `http://localhost`
 
 const pool = new Pool({
   user: 'postgres',
-  host: 'sd-db',
+  host: 'ds-db',
   database: 'postgres',
   password: password,
   port: dbPort,

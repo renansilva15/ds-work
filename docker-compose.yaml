@@ -3,7 +3,7 @@ networks:
   net:
 
 services:
-  sd-db:
+  ds-db:
     build:
       context: ./db
     ports:
@@ -14,8 +14,9 @@ services:
       - POSTGRES_PASSWORD=root
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mydata:/var/lib/postgresql/data
 
-  sd-consumer:
+  ds-consumer:
     build:
       context: ./consumer
     ports:
@@ -23,7 +24,7 @@ services:
     networks:
       - net
 
-  sd-queue:
+  ds-queue:
     build:
       context: ./queue
     ports:
@@ -31,10 +32,14 @@ services:
     networks:
       - net
 
-  sd-producer:
+  ds-producer:
     build:
       context: ./producer
     ports:
       - 3010:3010
     networks:
       - net
+
+volumes:
+  mydata:
+    driver: local
