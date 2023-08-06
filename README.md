@@ -64,4 +64,4 @@ http://localhost:3010
 
 ---
 
-Made with ❤️ by [Bruno Wanderson](https://github.com/brunowanderson7) and [renansilva15](https://github.com/renansilva15)
+Made with ❤️ by [brunowanderson7](https://github.com/brunowanderson7) and [renansilva15](https://github.com/renansilva15)
